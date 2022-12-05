@@ -11,4 +11,5 @@ public class Game {
     private Player player;
     private Computer computer;
     private Stack<Card> cardDeck;
+    private int gameAmount;
 }

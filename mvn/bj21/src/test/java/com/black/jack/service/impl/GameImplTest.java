@@ -63,6 +63,125 @@ class GameImplTest {
         Assertions.assertEquals(10, gs.showHand(game));
         pl.getHand().add(new Card(Rank.Five, Suit.Clubs));
         Assertions.assertEquals(15, gs.showHand(game));
+    }
 
+    @Test
+    void showWinner_LOSE() {
+        Player pl = new Player().setName("pl_1").setAmount(200);
+        GameService gs = new GameImpl();
+        Game game = gs.startGame(pl);
+
+        pl.getHand().add(new Card(Rank.Ace, Suit.Clubs));
+        pl.getHand().add(new Card(Rank.Ace, Suit.Clubs));
+
+        game.getComputer().setHand(22);
+
+        gs.showWinner(game, 100);
+
+        Assertions.assertEquals(0,game.getPlayer().getNumberOfWinGames());
+        Assertions.assertEquals(1,game.getPlayer().getNumberOfGames());
+        Assertions.assertEquals(100,game.getPlayer().getAmount());
+    }
+
+    @Test
+    void showWinner_DRAW() {
+        Player pl = new Player().setName("pl_1").setAmount(50);
+        GameService gs = new GameImpl();
+        Game game = gs.startGame(pl);
+
+        pl.getHand().add(new Card(Rank.Ten, Suit.Clubs));
+        pl.getHand().add(new Card(Rank.Ten, Suit.Clubs));
+
+        game.getComputer().setHand(20);
+
+        gs.showWinner(game, 100);
+
+        Assertions.assertEquals(0,game.getPlayer().getNumberOfWinGames());
+        Assertions.assertEquals(1,game.getPlayer().getNumberOfGames());
+        Assertions.assertEquals(50,game.getPlayer().getAmount());
+    }
+
+    @Test
+    void showWinner_PLAYER() {
+        Player pl = new Player().setName("pl_1").setAmount(100);
+        GameService gs = new GameImpl();
+        Game game = gs.startGame(pl);
+
+        pl.getHand().add(new Card(Rank.Ten, Suit.Clubs));
+        pl.getHand().add(new Card(Rank.Ten, Suit.Clubs));
+
+        game.getComputer().setHand(18);
+
+        gs.showWinner(game, 50);
+
+        Assertions.assertEquals(1,game.getPlayer().getNumberOfWinGames());
+        Assertions.assertEquals(1,game.getPlayer().getNumberOfGames());
+        Assertions.assertEquals(150,game.getPlayer().getAmount());
+    }
+
+    @Test
+    void showWinner_COMPUTER() {
+        Player pl = new Player().setName("pl_1").setAmount(200);
+        GameService gs = new GameImpl();
+        Game game = gs.startGame(pl);
+
+        pl.getHand().add(new Card(Rank.Ten, Suit.Clubs));
+        pl.getHand().add(new Card(Rank.Ten, Suit.Clubs));
+
+        game.getComputer().setHand(21);
+
+        gs.showWinner(game, 100);
+
+        Assertions.assertEquals(0,game.getPlayer().getNumberOfWinGames());
+        Assertions.assertEquals(1,game.getPlayer().getNumberOfGames());
+        Assertions.assertEquals(100,game.getPlayer().getAmount());
+    }
+
+    @Test
+    void clearHand() {
+        Player pl = new Player().setName("pl_1");
+        GameService gs = new GameImpl();
+        Game game = gs.startGame(pl);
+
+        pl.getHand().add(new Card(Rank.Ten, Suit.Clubs));
+        pl.getHand().add(new Card(Rank.Ten, Suit.Clubs));
+        Assertions.assertEquals(2,game.getPlayer().getHand().size());
+
+        gs.clearHand(game);
+
+        Assertions.assertEquals(0,game.getPlayer().getHand().size());
+    }
+
+    @Test
+    void updateDeck() {
+        Player pl = new Player().setName("pl_1");
+        GameService gs = new GameImpl();
+        Game game = gs.startGame(pl);
+
+        gs.userTurn(game);
+        gs.userTurn(game);
+        gs.userTurn(game);
+
+        Assertions.assertEquals(49, game.getCardDeck().size());
+
+        gs.updateDeck(game);
+
+        Assertions.assertEquals(52, game.getCardDeck().size());
+    }
+
+    @Test
+    void isOverScore() {
+        Player pl = new Player().setName("pl_1").setAmount(200);
+        GameService gs = new GameImpl();
+        Game game = gs.startGame(pl);
+
+        pl.getHand().add(new Card(Rank.Ace, Suit.Clubs));
+        pl.getHand().add(new Card(Rank.Ace, Suit.Clubs));
+
+        Assertions.assertTrue(gs.isOverScore(game));
+
+        gs.clearHand(game);
+        pl.getHand().add(new Card(Rank.Ace, Suit.Clubs));
+        Assertions.assertFalse(gs.isOverScore(game));
     }
 }

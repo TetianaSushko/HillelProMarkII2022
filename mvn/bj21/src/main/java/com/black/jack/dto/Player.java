@@ -1,6 +1,5 @@
 package com.black.jack.dto;
 
-import jdk.jfr.DataAmount;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
@@ -12,8 +11,8 @@ import java.util.List;
 public class Player {
     private String name;
     private Integer amount;
-    private Integer numberOfGames;
-    private Integer numberOfWinGames;
+    private Integer numberOfGames = 0;
+    private Integer numberOfWinGames = 0;
     private List<Card> hand = new ArrayList<>();
 
 }
