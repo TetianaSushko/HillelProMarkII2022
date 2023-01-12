@@ -56,9 +56,9 @@ public class StudentController {
         return new Student();
     }
 
-    @DeleteMapping("student/{uuid}")
-    Boolean deleteStudent(@PathVariable UUID uuid){
-         students = students.stream().filter(s -> !s.getId().equals(uuid)).collect(Collectors.toList());
+    @DeleteMapping("student/{id}")
+    Boolean deleteStudent(@PathVariable int id) throws SQLException {
+         sr.deleteStudent(id);
          return true;
     }
 }
