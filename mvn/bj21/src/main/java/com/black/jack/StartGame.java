@@ -6,17 +6,22 @@ import com.black.jack.service.GameService;
 import com.black.jack.service.MoneyService;
 import com.black.jack.service.impl.GameImpl;
 import com.black.jack.service.impl.MoneyServiceImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Scanner;
 
 public class StartGame {
+    private static final Logger logger = LoggerFactory.getLogger("stdout");
+    private static final Logger save = LoggerFactory.getLogger("logger");
+
     public static void main(String[] args) {
         Scanner cs = new Scanner(System.in);
-        System.out.println("Enter your name ...");
+        logger.info("Enter your name ...");
         String name = cs.nextLine();
-        System.out.println("Put money into ...");
+        logger.info("Put money into ...");
         Integer amount = cs.nextInt();
-        System.out.println("Enter number of games ...");
+        logger.info("Enter number of games ...");
         Integer numberOfGames = cs.nextInt();
         cs.nextLine();
 
@@ -31,7 +36,7 @@ public class StartGame {
         String stopGame = "Y";
 
         do{
-            System.out.println("Please put your bet:");
+            logger.info("Please put your bet:");
             int gameAmount = cs.nextInt();
             cs.nextLine();
             if (!ms.checkBalance(game, gameAmount)) {
@@ -39,7 +44,7 @@ public class StartGame {
                 String des = cs.nextLine();
 
                 if (!des.equalsIgnoreCase("y")){
-                    System.out.println("Please put your new bet:");
+                    logger.info("Please put your new bet:");
                     gameAmount = cs.nextInt();
                     cs.nextLine();
                 } else {
@@ -50,17 +55,18 @@ public class StartGame {
             do {
                 gs.userTurn(game);
                 if (gs.isOverScore(game)) break;
-                System.out.println("Next card ... [Y/N]");
+                logger.info("Next card ... [Y/N]");
                 contitue = cs.nextLine();
             } while (contitue.equalsIgnoreCase("y"));
             gs.showWinner(game, gameAmount);
             if (--numberOfGames == 0) break;
             gs.clearHand(game);
             gs.updateDeck(game);
-            System.out.println("Continue game ... [Y/N]");
+            logger.info("Continue game ... [Y/N]");
             stopGame = cs.nextLine();
         } while (stopGame.equalsIgnoreCase("y"));
 
-        System.out.println(gs.showResult(game));
+        save.info(gs.showResult(game));
+
     }
 }

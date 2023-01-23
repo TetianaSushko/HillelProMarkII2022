@@ -9,6 +9,8 @@ import com.black.jack.service.CardDeck;
 import com.black.jack.service.GameService;
 import com.black.jack.service.MoneyService;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +21,8 @@ public class GameImpl implements GameService {
 
     private final CardDeck cd = new CardDeckImpl();
     private final MoneyService moneyService = new MoneyServiceImpl();
+
+    private static final Logger live = LoggerFactory.getLogger("live");
 
     @Override
     public Game startGame(Player player) {
@@ -37,6 +41,7 @@ public class GameImpl implements GameService {
         hand.add(card);
 
         System.out.println("score : " + showHand(game));
+        live.info("score : " + showHand(game));
 
     }
 
@@ -48,6 +53,7 @@ public class GameImpl implements GameService {
         for (Card card : hand) {
             amount += card.getCost();
             System.out.print(card + " ");
+            live.info(card + " ");
         }
         System.out.println();
         return amount;
@@ -66,31 +72,38 @@ public class GameImpl implements GameService {
         int cScore = game.getComputer().getHand();
 
         System.out.println("Player score : " + pScore);
+        live.info("Player score : " + pScore);
         System.out.println("Computer score : " + cScore);
-
+        live.info("Computer score : " + cScore);
         if (pScore > 21 && cScore > 21) {
             System.out.println(Result.LOSE);
+            live.info(Result.LOSE.toString());
             game.getPlayer().setNumberOfGames(game.getPlayer().getNumberOfGames() + 1);
             moneyService.subMoneyFromAmount(game, gameAmount);
         } else if (pScore <= 21 && cScore > 21) {
             System.out.println(Result.PLAYER);
+            live.info(Result.PLAYER.toString());
             game.getPlayer().setNumberOfGames(game.getPlayer().getNumberOfGames() + 1);
             game.getPlayer().setNumberOfWinGames(game.getPlayer().getNumberOfWinGames() + 1);
             moneyService.addMoneyToAmount(game, gameAmount);
         } else if (pScore > 21) {
             System.out.println(Result.COMPUTER);
+            live.info(Result.COMPUTER.toString());
             game.getPlayer().setNumberOfGames(game.getPlayer().getNumberOfGames() + 1);
             moneyService.subMoneyFromAmount(game, gameAmount);
         } else if (pScore == cScore) {
             System.out.println(Result.DRAW);
+            live.info(Result.DRAW.toString());
             game.getPlayer().setNumberOfGames(game.getPlayer().getNumberOfGames() + 1);
         } else if (pScore > cScore) {
             System.out.println(Result.PLAYER);
+            live.info(Result.PLAYER.toString());
             game.getPlayer().setNumberOfGames(game.getPlayer().getNumberOfGames() + 1);
             game.getPlayer().setNumberOfWinGames(game.getPlayer().getNumberOfWinGames() + 1);
             moneyService.addMoneyToAmount(game, gameAmount);
         } else {
             System.out.println(Result.COMPUTER);
+            live.info(Result.COMPUTER.toString());
             game.getPlayer().setNumberOfGames(game.getPlayer().getNumberOfGames() + 1);
             moneyService.subMoneyFromAmount(game, gameAmount);
         }
