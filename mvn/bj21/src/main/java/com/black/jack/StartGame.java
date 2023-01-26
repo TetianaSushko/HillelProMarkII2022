@@ -9,6 +9,8 @@ import com.black.jack.service.impl.MoneyServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Locale;
+import java.util.ResourceBundle;
 import java.util.Scanner;
 
 public class StartGame {
@@ -16,12 +18,19 @@ public class StartGame {
     private static final Logger save = LoggerFactory.getLogger("logger");
 
     public static void main(String[] args) {
+        Locale defLocale = Locale.getDefault();
+        if (args.length != 0) {
+            defLocale = new Locale(args[0]);
+        }
+        ResourceBundle
+                resourceBundle = ResourceBundle.getBundle("message", defLocale);
+
         Scanner cs = new Scanner(System.in);
-        logger.info("Enter your name ...");
+        logger.info(resourceBundle.getString("enter_name"));
         String name = cs.nextLine();
-        logger.info("Put money into ...");
+        logger.info(resourceBundle.getString("money"));
         Integer amount = cs.nextInt();
-        logger.info("Enter number of games ...");
+        logger.info(resourceBundle.getString("number_of_games"));
         Integer numberOfGames = cs.nextInt();
         cs.nextLine();
 
