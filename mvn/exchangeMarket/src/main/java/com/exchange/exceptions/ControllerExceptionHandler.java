@@ -8,10 +8,15 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class ControllerExceptionHandler {
 
-    @ExceptionHandler(value = {
-            Exception.class})
+    @ExceptionHandler(value = {Exception.class})
     public ResponseEntity<?> handleInvalidTopUpTypeException(Exception ex) {
         return new ResponseEntity(ex.getMessage(), HttpStatus.BAD_REQUEST);
+
+    }
+
+    @ExceptionHandler(value = {UserNotFoundException.class})
+    public ResponseEntity<?> handleUserNotFoundException(Exception ex) {
+        return new ResponseEntity("USER NOT FOUND", HttpStatus.BAD_REQUEST);
 
     }
 }

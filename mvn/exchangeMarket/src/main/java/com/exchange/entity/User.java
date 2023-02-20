@@ -1,12 +1,17 @@
 package com.exchange.entity;
 
-import lombok.Data;
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.experimental.Accessors;
 
-import javax.persistence.*;
 import java.util.Date;
 
-@Data
+@Getter
+@Setter
 @Entity
+@Accessors(chain = true)
+@Table(name = "user")
 public class User {
 
     @Id

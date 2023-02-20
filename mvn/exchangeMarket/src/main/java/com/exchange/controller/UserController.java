@@ -1,7 +1,9 @@
 package com.exchange.controller;
 
-import com.exchange.entity.User;
-import com.exchange.repository.UserRepository;
+
+import com.exchange.dto.UserRecord;
+import com.exchange.dto.UserDto;
+import com.exchange.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -17,18 +19,21 @@ import java.util.List;
 @Slf4j
 public class UserController {
 
-    private final UserRepository userRepository;
+    private final UserService userService;
 
     @PostMapping("/user")
-    public Long addUser(@RequestBody User user) {
-        User save = userRepository.save(user);
-        return save.getId();
+    public Long addUser(@RequestBody UserRecord user) {
+        return userService.createUser(user);
     }
 
-     @GetMapping("/users")
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
+    @GetMapping("/users")
+    public List<UserDto> getAllUsers() {
+        return userService.getAllUsers();
     }
 
+    @GetMapping("/user/{id}")
+    public UserDto getUserById(@RequestParam Long id) {
+        return userService.getUserById(id);
+    }
 
 }

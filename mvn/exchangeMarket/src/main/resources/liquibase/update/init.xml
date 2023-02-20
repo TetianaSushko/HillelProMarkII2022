@@ -16,4 +16,16 @@
             <column name="status" type="BOOLEAN"/>
         </createTable>
     </changeSet>
+
+    <changeSet author="hillel_user" id="createTableWallet">
+        <createTable tableName="wallet">
+            <column name="id" type="INT" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="currency" type="varchar(3)"/>
+            <column name="ammount" type="DECIMAL"/>
+            <column name="last_update" type="TIMESTAMP"/>
+            <column name="user_id" type="INT"/>
+        </createTable>
+    </changeSet>
 </databaseChangeLog>
