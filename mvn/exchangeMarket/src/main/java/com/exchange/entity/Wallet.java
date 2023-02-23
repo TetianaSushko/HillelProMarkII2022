@@ -13,7 +13,7 @@ import java.sql.Timestamp;
 @Setter
 @Entity
 @Accessors(chain = true)
-@Table(name = "wallet")
+@Table(name = "WALLET")
 public class Wallet {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

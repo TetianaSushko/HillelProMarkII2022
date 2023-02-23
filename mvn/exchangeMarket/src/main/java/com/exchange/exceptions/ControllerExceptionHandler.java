@@ -19,4 +19,16 @@ public class ControllerExceptionHandler {
         return new ResponseEntity("USER NOT FOUND", HttpStatus.BAD_REQUEST);
 
     }
+
+    @ExceptionHandler(value = {UnsupportedCurrencyException.class})
+    public ResponseEntity<?> handleCurrencyException(Exception ex) {
+        return new ResponseEntity("CURRENCY DOES NOT SUPPORT", HttpStatus.BAD_REQUEST);
+
+    }
+
+    @ExceptionHandler(value = {CurrencyExistException.class})
+    public ResponseEntity<?> handleCurrencyExistException(Exception ex) {
+        return new ResponseEntity("WALLET WITh THIS CURRENCY IS EXIST", HttpStatus.BAD_REQUEST);
+
+    }
 }
