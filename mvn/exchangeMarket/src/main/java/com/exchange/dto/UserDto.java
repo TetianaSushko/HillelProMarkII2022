@@ -16,7 +16,7 @@ public class UserDto {
     private String phoneNumber;
     private String email;
     private Date dateOfBirth;
-    private boolean isActive;
+    private boolean active;
 
     public static UserDto fromEntity(User user) {
         return UserDto.builder()

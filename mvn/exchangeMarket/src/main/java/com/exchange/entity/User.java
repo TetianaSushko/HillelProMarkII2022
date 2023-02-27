@@ -33,5 +33,5 @@ public class User {
     private Date dateOfBirth;
 
     @Column(name = "status")
-    boolean isActive;
+    boolean status;
 }

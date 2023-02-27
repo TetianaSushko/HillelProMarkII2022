@@ -31,4 +31,10 @@ public class ControllerExceptionHandler {
         return new ResponseEntity("WALLET WITh THIS CURRENCY IS EXIST", HttpStatus.BAD_REQUEST);
 
     }
+
+    @ExceptionHandler(value = {NotUniqueDataException.class})
+    public ResponseEntity<?> handleUniqueDataException(Exception ex) {
+        return new ResponseEntity("You could not create user", HttpStatus.BAD_REQUEST);
+
+    }
 }

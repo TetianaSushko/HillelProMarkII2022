@@ -98,8 +98,6 @@ public class StudentRepository {
         connection.close();
 
     }
-
-
     public void deleteStudent(int id) throws SQLException {
         /*
         UPDATE table_name

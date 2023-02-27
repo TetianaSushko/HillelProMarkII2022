@@ -28,4 +28,39 @@
             <column name="user_id" type="INT"/>
         </createTable>
     </changeSet>
+
+    <changeSet id="alter_table" author="hillel">
+        <sql>
+            ALTER TABLE
+                wallet
+                MODIFY COLUMN
+                currency enum ('UAH', 'USD', 'EUR');
+        </sql>
+    </changeSet>
+
+    <changeSet author="hillel_user" id="createTableNotification">
+        <createTable tableName="notification">
+            <column name="id" type="INT" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="type" type="varchar(50)"/>
+            <column name="content" type="varchar(2048)"/>
+            <column name="user_id" type="INT"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="alter_table_notif" author="hillel">
+        <sql>
+            ALTER TABLE
+                notification
+                MODIFY COLUMN
+                type enum ('REGISTRATION','EXCHANGE', 'PUT', 'GET', 'RATE');
+        </sql>
+    </changeSet>
+
+    <changeSet id="add_createAt_colund" author="hille_user">
+        <addColumn tableName="notification">
+            <column name="create_at" type="DateTime"/>
+        </addColumn>
+    </changeSet>
 </databaseChangeLog>
