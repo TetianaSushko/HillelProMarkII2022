@@ -37,6 +37,17 @@ public class WalletController {
         return walletService.createWallet(wRequest);
     }
 
+    @PostMapping("/put")
+    public Long putMoneyToAccount(@RequestBody TransferDto transferDto){
+        return walletService.putMoney(transferDto);
+    }
+
+    @PostMapping("/get")
+    public void getMoneyToAccount(@RequestBody TransferDto transferDto){
+        walletService.getMonet(transferDto);
+
+    }
+
 
 
 }

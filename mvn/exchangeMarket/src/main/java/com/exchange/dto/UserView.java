@@ -1,7 +1,5 @@
 package com.exchange.dto;
 
-import com.exchange.entity.CurrencyEnum;
-
 import java.math.BigDecimal;
 
 public interface UserView {

@@ -37,4 +37,9 @@ public class ControllerExceptionHandler {
         return new ResponseEntity("You could not create user", HttpStatus.BAD_REQUEST);
 
     }
+
+    @ExceptionHandler(value = {NotEnoughtMoneyException.class})
+    public ResponseEntity<?> handleNotEnoughtMoneyException(Exception ex) {
+        return new ResponseEntity("net babla....", HttpStatus.BAD_REQUEST);
+    }
 }

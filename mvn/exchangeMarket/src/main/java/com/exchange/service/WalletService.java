@@ -9,4 +9,7 @@ public interface WalletService {
 
     UserWalletsDto getUserWallets(String phone);
     UserWalletsDto createWallet (WalletRequest walletRequest);
+
+    Long putMoney(TransferDto transferDto);
+    void getMonet(TransferDto transferDto);
 }
