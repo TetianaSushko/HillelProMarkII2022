@@ -107,4 +107,10 @@
         </sql>
     </changeSet>
 
+    <changeSet id="add_transaction_code" author="hille_user">
+        <addColumn tableName="transaction">
+            <column name="code" type="varchar(6)"/>
+        </addColumn>
+    </changeSet>
+
 </databaseChangeLog>

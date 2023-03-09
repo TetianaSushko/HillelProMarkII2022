@@ -22,5 +22,9 @@ public interface UserService {
 
     UserDto getUserById(Long id);
 
+    User getUserByPhone(String phone);
+
+    void saveUser(User user);
+
     List<UserView> getUserWalletByPhone(String phone);
 }

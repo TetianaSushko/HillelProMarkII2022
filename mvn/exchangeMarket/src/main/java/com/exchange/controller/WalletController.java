@@ -37,8 +37,13 @@ public class WalletController {
         return walletService.createWallet(wRequest);
     }
 
+    @PostMapping("/put/verification")
+    public Long putTransactionVerification(@RequestBody VerificationDto verificationDto){
+        return walletService.putMoneyVerification(verificationDto);
+    }
+
     @PostMapping("/put")
-    public Long putMoneyToAccount(@RequestBody TransferDto transferDto){
+    public Long putMoneyToAccount(@RequestBody TransferDto transferDto) {
         return walletService.putMoney(transferDto);
     }
 

@@ -11,5 +11,7 @@ public interface WalletService {
     UserWalletsDto createWallet (WalletRequest walletRequest);
 
     Long putMoney(TransferDto transferDto);
+
+    Long putMoneyVerification(VerificationDto verificationDto);
     void getMonet(TransferDto transferDto);
 }

@@ -9,7 +9,9 @@ import com.exchange.repository.TransactionRepository;
 import com.exchange.repository.UserRepository;
 import com.exchange.repository.WalletRepository;
 import com.exchange.service.WalletService;
+import com.exchange.telegram.TelegramBot;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -25,6 +27,8 @@ public class WalletServiceImpl implements WalletService {
     private final UserRepository userRepository;
     private final WalletRepository walletRepository;
     private final TransactionRepository transactionRepository;
+
+    private final TelegramBot telegramBot;
 
     @Override
     public UserWalletsDto getUserWallets(String phone) {
@@ -63,25 +67,47 @@ public class WalletServiceImpl implements WalletService {
     @Override
     public Long putMoney(TransferDto transferDto) {
         User user = userRepository.findByPhoneNumber(transferDto.getPhoneNumber());
+
+        String verificationCode = RandomStringUtils.randomAlphabetic(6);
         Transaction transaction = new Transaction()
                 .setReceiver(transferDto.getPhoneNumber())
                 .setAmount(transferDto.getAmmount())
                 .setType(TransactionTypeEnum.PUT)
                 .setUpdateAt(LocalDate.now())
                 .setCurrency(transferDto.getCurrency())
+                .setCode(verificationCode)
                 .setStatus(TransactionStatusEnum.PENDING);
 
 
+        telegramBot.sendMessage(user.getTelegramChatId(), verificationCode);
 
         Wallet wallet = walletRepository.findByUserAndCurrency(user, transferDto.getCurrency());
-        wallet.setAmmount(wallet.getAmmount().add(transferDto.getAmmount()));
-        walletRepository.save(wallet);
-
-        transaction.setStatus(TransactionStatusEnum.EXECUTED);
+//        wallet.setAmmount(wallet.getAmmount().add(transferDto.getAmmount()));
+//        walletRepository.save(wallet);
+//
+//        transaction.setStatus(TransactionStatusEnum.EXECUTED);
         transactionRepository.save(transaction);
 
         System.out.println(transaction);
 
+        return transaction.getId();
+    }
+
+    @Override
+    public Long putMoneyVerification(VerificationDto verificationDto) {
+        User user = userRepository.findByPhoneNumber(verificationDto.phoneNumber());
+
+        Transaction transaction = transactionRepository.findById(verificationDto.transactionId())
+                .orElseThrow(NullPointerException::new);
+
+        if (transaction.getCode().equals(verificationDto.code())){
+            Wallet wallet = walletRepository.findByUserAndCurrency(user, transaction.getCurrency());
+            wallet.setAmmount(wallet.getAmmount().add(transaction.getAmount()));
+            walletRepository.save(wallet);
+            transaction.setCode(null);
+            transaction.setStatus(TransactionStatusEnum.EXECUTED);
+            transactionRepository.save(transaction);
+        }
         return transaction.getId();
     }
 

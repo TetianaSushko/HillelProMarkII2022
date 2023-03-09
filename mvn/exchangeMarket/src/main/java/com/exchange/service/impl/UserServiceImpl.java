@@ -74,6 +74,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User getUserByPhone(String phone) {
+        return userRepository.findByPhoneNumber(phone);
+    }
+
+    @Override
+    public void saveUser(User user) {
+        userRepository.save(user);
+    }
+
+    @Override
     public Page<User> getUsers(Pageable page) {
         return userRepository.findAll(page);
     }
