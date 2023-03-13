@@ -66,8 +66,7 @@ public class UserServiceImpl implements UserService {
 
         notificationRepository.save(new Notification()
                 .setType(NotificationTypeEnum.REGISTRATION)
-                .setCreateAt(LocalDate.now())
-                .setUserId(save.getId())
+                .setUser(save)
                 .setContent(String.format("create user: %s and create 2 wallet: UAH, USD ", save.getId())));
 
         return save.getId();

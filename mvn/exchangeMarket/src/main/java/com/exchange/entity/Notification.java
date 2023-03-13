@@ -12,24 +12,16 @@ import java.util.Date;
 
 @Getter
 @Setter
-@Entity
 @Accessors(chain = true)
-@Table(name = "notification")
 public class Notification {
-
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
-
+    private String id;
     @Enumerated(EnumType.STRING)
-    NotificationTypeEnum type;
+    private NotificationTypeEnum type;
 
-    String content;
+    private String content;
 
-    @Column(name = "user_id")
-    long userId;
+    private User user;
 
-    @Column(name = "create_at")
-    private LocalDate createAt;
-
+    private LocalDate createAt = LocalDate.now();
 }

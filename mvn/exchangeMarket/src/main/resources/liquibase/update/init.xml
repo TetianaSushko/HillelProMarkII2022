@@ -113,4 +113,16 @@
         </addColumn>
     </changeSet>
 
+    <changeSet author="hillel_user" id="createTableRate">
+        <createTable tableName="rate">
+            <column name="id" type="INT" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="currency" type="varchar(3)"/>
+            <column name="buy" type="VARCHAR(15)"/>
+            <column name="sale" type="VARCHAR(15)"/>
+            <column name="receive" type="TIMESTAMP"/>
+        </createTable>
+    </changeSet>
+
 </databaseChangeLog>

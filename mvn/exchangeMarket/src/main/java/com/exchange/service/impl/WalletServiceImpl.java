@@ -5,6 +5,7 @@ import com.exchange.entity.*;
 import com.exchange.exceptions.CurrencyExistException;
 import com.exchange.exceptions.NotEnoughtMoneyException;
 import com.exchange.exceptions.UserNotFoundException;
+import com.exchange.repository.NotificationRepository;
 import com.exchange.repository.TransactionRepository;
 import com.exchange.repository.UserRepository;
 import com.exchange.repository.WalletRepository;
@@ -27,6 +28,7 @@ public class WalletServiceImpl implements WalletService {
     private final UserRepository userRepository;
     private final WalletRepository walletRepository;
     private final TransactionRepository transactionRepository;
+    private final NotificationRepository notificationRepository;
 
     private final TelegramBot telegramBot;
 
@@ -81,14 +83,14 @@ public class WalletServiceImpl implements WalletService {
 
         telegramBot.sendMessage(user.getTelegramChatId(), verificationCode);
 
-        Wallet wallet = walletRepository.findByUserAndCurrency(user, transferDto.getCurrency());
-//        wallet.setAmmount(wallet.getAmmount().add(transferDto.getAmmount()));
-//        walletRepository.save(wallet);
-//
-//        transaction.setStatus(TransactionStatusEnum.EXECUTED);
         transactionRepository.save(transaction);
 
-        System.out.println(transaction);
+        notificationRepository.save(new Notification()
+                .setType(NotificationTypeEnum.PUT)
+                .setUser(user)
+                .setContent(String.format("User try put %s %s to wallet. Status pending",
+                        transferDto.getAmmount(),
+                        transferDto.getCurrency())));
 
         return transaction.getId();
     }
@@ -100,13 +102,20 @@ public class WalletServiceImpl implements WalletService {
         Transaction transaction = transactionRepository.findById(verificationDto.transactionId())
                 .orElseThrow(NullPointerException::new);
 
-        if (transaction.getCode().equals(verificationDto.code())){
+        if (transaction.getCode().equals(verificationDto.code())) {
             Wallet wallet = walletRepository.findByUserAndCurrency(user, transaction.getCurrency());
             wallet.setAmmount(wallet.getAmmount().add(transaction.getAmount()));
             walletRepository.save(wallet);
             transaction.setCode(null);
             transaction.setStatus(TransactionStatusEnum.EXECUTED);
             transactionRepository.save(transaction);
+
+            notificationRepository.save(new Notification()
+                    .setType(NotificationTypeEnum.PUT)
+                    .setUser(user)
+                    .setContent(String.format("User put %s %s to wallet. Status execute",
+                            transaction.getAmount(),
+                            transaction.getCurrency())));
         }
         return transaction.getId();
     }
