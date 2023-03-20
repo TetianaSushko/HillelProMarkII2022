@@ -53,6 +53,12 @@ public class WalletController {
 
     }
 
+    @PostMapping("/exchange")
+    public void getMoneyToAccount(@RequestBody ExchangeDto exchangeDto){
+        walletService.exchangeMoney(exchangeDto);
+
+    }
+
 
 
 }

@@ -5,10 +5,7 @@ import com.exchange.entity.*;
 import com.exchange.exceptions.CurrencyExistException;
 import com.exchange.exceptions.NotEnoughtMoneyException;
 import com.exchange.exceptions.UserNotFoundException;
-import com.exchange.repository.NotificationRepository;
-import com.exchange.repository.TransactionRepository;
-import com.exchange.repository.UserRepository;
-import com.exchange.repository.WalletRepository;
+import com.exchange.repository.*;
 import com.exchange.service.WalletService;
 import com.exchange.telegram.TelegramBot;
 import lombok.RequiredArgsConstructor;
@@ -29,7 +26,7 @@ public class WalletServiceImpl implements WalletService {
     private final WalletRepository walletRepository;
     private final TransactionRepository transactionRepository;
     private final NotificationRepository notificationRepository;
-
+    private final RateRepository rateRepository;
     private final TelegramBot telegramBot;
 
     @Override
@@ -129,5 +126,39 @@ public class WalletServiceImpl implements WalletService {
 
         wallet.setAmmount(wallet.getAmmount().subtract(transferDto.getAmmount()));
         walletRepository.save(wallet);
+    }
+
+    @Override
+    public Long exchangeMoney(ExchangeDto exchangeDto) {
+        User user = userRepository.findByPhoneNumber(exchangeDto.getPhoneNumber());
+
+        Rate rate = rateRepository.findFirstByCurrencyOrderByReceiveDesc(exchangeDto.getCurrencyTo());
+
+        List<Wallet> allByUser = walletRepository.findAllByUser(user);
+
+        String verificationCode = RandomStringUtils.randomAlphabetic(6);
+
+        Transaction transaction = new Transaction()
+                .setReceiver(exchangeDto.getPhoneNumber())
+                .setAmount(exchangeDto.getAmmount())
+                .setType(TransactionTypeEnum.EXCH)
+                .setUpdateAt(LocalDate.now())
+                .setCurrency(exchangeDto.getCurrencyTo())
+                .setCode(verificationCode)
+                .setStatus(TransactionStatusEnum.PENDING)
+                .setComment("From -> to : " + exchangeDto.getCurrencyFrom() +" -> "+ exchangeDto.getCurrencyTo());
+
+
+        telegramBot.sendMessage(user.getTelegramChatId(), verificationCode);
+
+        transactionRepository.save(transaction);
+
+        return transaction.getId();
+
+    }
+
+    @Override
+    public Long exchangeMoneyVerification(ExchangeDto exchangeDto) {
+        return null;
     }
 }
