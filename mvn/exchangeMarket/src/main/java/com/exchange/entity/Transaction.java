@@ -26,6 +26,13 @@ public class Transaction {
     private BigDecimal amount;
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "currency_to")
+    private CurrencyEnum currencyTo;
+
+    @Column(name = "amount_to")
+    private BigDecimal amountTo;
+
+    @Enumerated(EnumType.STRING)
     private TransactionTypeEnum type;
 
     private String sender;

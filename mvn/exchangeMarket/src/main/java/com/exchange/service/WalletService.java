@@ -11,7 +11,8 @@ public interface WalletService {
     UserWalletsDto createWallet (WalletRequest walletRequest);
     Long putMoney(TransferDto transferDto);
     Long putMoneyVerification(VerificationDto verificationDto);
-    void getMonet(TransferDto transferDto);
+    Long getMoney(TransferDto transferDto);
+    Long getMoneyVerification(VerificationDto verificationDto);
     Long exchangeMoney(ExchangeDto exchangeDto);
-    Long exchangeMoneyVerification(ExchangeDto exchangeDto);
+    Long exchangeMoneyVerification(VerificationDto verificationDto);
 }

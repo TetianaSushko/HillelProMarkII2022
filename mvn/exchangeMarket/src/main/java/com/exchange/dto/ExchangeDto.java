@@ -12,8 +12,8 @@ import java.math.BigDecimal;
 @Builder
 public class ExchangeDto {
     private String phoneNumber;
-    private CurrencyEnum currencyFrom;
-    private CurrencyEnum currencyTo;
+    private CurrencyEnum currencyFrom; // UAH
+    private CurrencyEnum currencyTo;   // USD
     private BigDecimal ammount;
 
 }

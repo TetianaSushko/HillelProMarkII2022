@@ -48,17 +48,24 @@ public class WalletController {
     }
 
     @PostMapping("/get")
-    public void getMoneyToAccount(@RequestBody TransferDto transferDto){
-        walletService.getMonet(transferDto);
+    public Long getMoneyfromAccount(@RequestBody TransferDto transferDto){
+        return walletService.getMoney(transferDto);
+    }
 
+    @PostMapping("/get/verification")
+    public Long getTransactionVerification(@RequestBody VerificationDto verificationDto){
+        return walletService.getMoneyVerification(verificationDto);
     }
 
     @PostMapping("/exchange")
-    public void getMoneyToAccount(@RequestBody ExchangeDto exchangeDto){
-        walletService.exchangeMoney(exchangeDto);
-
+    public Long exchangeMoney(@RequestBody ExchangeDto exchangeDto){
+        return walletService.exchangeMoney(exchangeDto);
     }
 
+    @PostMapping("/exchange/verification")
+    public Long exchangeTransactionVerification(@RequestBody VerificationDto verificationDto){
+        return walletService.exchangeMoneyVerification(verificationDto);
+    }
 
 
 }
