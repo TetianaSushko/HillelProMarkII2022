@@ -6,3 +6,4 @@
 5. validation transaction flow -> https://refactoring.guru/ru/design-patterns/chain-of-responsibility
 6. logs
 7. tests unit + integration (testcontainers - https://www.testcontainers.org/)
+8. code style
